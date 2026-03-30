@@ -16,8 +16,12 @@ import HsLua.Packaging
 annotateFunction :: DocumentedFunction a -> Text
 annotateFunction (DocumentedFunction {functionName, functionDoc}) = do
   let name = decodeName functionName
+      desc = functionDesc functionDoc
       typ = returnType functionDoc
-  "---@return " <> typ <> "\n" <> "function " <> name <> "()"
+  "---" <> desc <> "\n" <> "---@return " <> typ <> "\n" <> "function " <> name <> "()"
+
+functionDesc :: FunctionDoc -> Text
+functionDesc (FunDoc {funDocDescription}) = funDocDescription
 
 returnType :: FunctionDoc -> Text
 returnType (FunDoc {funDocResults}) = go funDocResults
