@@ -1,0 +1,2 @@
+---@return integer
+function factorial()
