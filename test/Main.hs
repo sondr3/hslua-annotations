@@ -6,7 +6,8 @@ import Data.Version (makeVersion)
 import HsLua.Annotations (annotateFunction, annotateModule)
 import HsLua.Core qualified as Lua
 import HsLua.Marshalling (peekIntegral, pushIntegral)
-import HsLua.Module.Path (documentedModule)
+import HsLua.Module.Path qualified as Path
+import HsLua.Module.Version qualified as Version
 import HsLua.Packaging
 import Test.Tasty (TestTree, defaultMain, testGroup)
 import Test.Tasty.Golden
@@ -19,7 +20,8 @@ tests =
   testGroup
     "Spec"
     [ goldenVsString "factorial" "test/golden/factorial.lua" (pure $ encodeUtf8 (fromStrict $ annotateFunction factorial)),
-      goldenVsString "path" "test/golden/path.lua" (pure $ encodeUtf8 $ fromStrict (annotateModule documentedModule))
+      goldenVsString "path" "test/golden/path.lua" (pure $ encodeUtf8 $ fromStrict (annotateModule Path.documentedModule)),
+      goldenVsString "version" "test/golden/version.lua" (pure $ encodeUtf8 $ fromStrict (annotateModule Version.documentedModule))
     ]
 
 factorial :: DocumentedFunction Lua.Exception

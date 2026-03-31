@@ -26,12 +26,13 @@ annotateFunction (DocumentedFunction {functionName, functionDoc}) = do
         ]
 
 annotateModule :: Module Lua.Exception -> Text
-annotateModule (Module {moduleName, moduleDescription, moduleFields, moduleFunctions}) =
+annotateModule (Module {moduleName, moduleDescription, moduleFields, moduleFunctions, moduleOperations}) =
   T.unlines
     [ "---@meta " <> decodeName moduleName,
       "---" <> moduleDescription <> "\n",
       "---@class (exact) " <> decodeName moduleName,
       T.intercalate "\n" (map fieldDesc moduleFields),
+      T.intercalate "\n" (map opDesc moduleOperations),
       "local " <> decodeName moduleName <> " = {}\n",
       T.intercalate "\n" (map (moduleFuncDesc moduleName) moduleFunctions)
     ]
@@ -49,6 +50,9 @@ moduleFuncDesc moduleName (DocumentedFunction {functionName, functionDoc}) = do
           "---@return " <> typ,
           "function " <> decodeName moduleName <> "." <> name <> "(" <> params <> ")"
         ]
+
+opDesc :: (Operation, DocumentedFunction a) -> Text
+opDesc (op, DocumentedFunction {functionDoc}) = "---@operator " <> opName op <> ":" <> returnType functionDoc
 
 fieldDesc :: Field a -> Text
 fieldDesc (Field {fieldName, fieldDoc}) = "---@field " <> decodeName fieldName <> " " <> docs fieldDoc
@@ -81,6 +85,34 @@ returnType (FunDoc {funDocResults}) = go funDocResults
 
 resultValueDesc :: ResultValueDoc -> Text
 resultValueDesc (ResultValueDoc {resultValueType}) = T.pack $ typeSpecToString resultValueType
+
+opName :: Operation -> Text
+opName = \case
+  Add -> "add"
+  Sub -> "sub"
+  Mul -> "mul"
+  Div -> "div"
+  Mod -> "mod"
+  Pow -> "pow"
+  Unm -> "unm"
+  Idiv -> "idiv"
+  Band -> "band"
+  Bor -> "bor"
+  Bxor -> "bxor"
+  Bnot -> "bnot"
+  Shl -> "shl"
+  Shr -> "shr"
+  Concat -> "concat"
+  Len -> "len"
+  Eq -> "eq"
+  Lt -> "lt"
+  Le -> "le"
+  Index -> "index"
+  Newindex -> "newindex"
+  Call -> "call"
+  Tostring -> "tostring"
+  Pairs -> "pairs"
+  CustomOperation x -> decodeName x
 
 decodeName :: Name -> Text
 decodeName = decodeUtf8 . fromName

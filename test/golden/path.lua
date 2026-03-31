@@ -4,6 +4,7 @@
 ---@class (exact) path
 ---@field separator string The character that separates directories.
 ---@field search_path_separator string The character that is used to separate the entries in the `PATH` environment variable.
+
 local path = {}
 
 ---Gets the directory name, i.e., removes the last directory separator and everything after from the given path.

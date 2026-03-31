@@ -51,6 +51,7 @@ common config
     base >=4.12 && <5,
     hslua-core ^>=2.3,
     hslua-marshalling ^>=2.3,
+    hslua-objectorientation ^>=2.5,
     hslua-packaging ^>=2.4,
     hslua-typing ^>=0.2,
     text ^>=2,
@@ -69,6 +70,7 @@ test-suite hslua-annotations-golden
   build-depends:
     hslua-annotations,
     hslua-module-path ^>=1.2,
+    hslua-module-version ^>=1.2,
     tasty ^>=1.5,
     tasty-golden ^>=2.3,
 
