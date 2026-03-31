@@ -127,7 +127,7 @@ annotateMethod parent (DocumentedFunction {functionName, functionDoc}) = do
    in T.unlines $
         filter
           (not . T.null)
-          [ "---" <> desc,
+          [ if T.null desc then "" else "---" <> desc,
             paramAnn,
             "---@return " <> typ,
             "function " <> paren <> name <> "(" <> params <> ")"

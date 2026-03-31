@@ -5,7 +5,6 @@
 ---@operator call:Version
 local Version = {}
 
----
 ---@param self Version version to check
 ---@param reference Version minimum version
 ---@param msg? string alternative message
