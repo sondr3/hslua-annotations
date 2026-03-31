@@ -21,12 +21,12 @@ annotateFunction (DocumentedFunction {functionName, functionDoc}) = do
   "---" <> desc <> "\n" <> paramAnn <> "\n" <> "---@return " <> typ <> "\n" <> "function " <> name <> "(" <> params <> ")"
 
 annotateModule :: Module Lua.Exception -> Text
-annotateModule (Module {moduleName, moduleDescription, moduleFields, moduleFunctions}) = "---@meta " <> (decodeName moduleName) <> "\n" <> "---" <> moduleDescription <> "\n\n" <> "---@class (exact) " <> (decodeName moduleName) <> "\n" <> (T.intercalate "\n" $ map fieldDesc moduleFields) <> "\n" <> "local " <> (decodeName moduleName) <> " = {}"
+annotateModule (Module {moduleName, moduleDescription, moduleFields, moduleFunctions}) = "---@meta " <> decodeName moduleName <> "\n" <> "---" <> moduleDescription <> "\n\n" <> "---@class (exact) " <> decodeName moduleName <> "\n" <> T.intercalate "\n" (map fieldDesc moduleFields) <> "\n" <> "local " <> decodeName moduleName <> " = {}"
 
-fieldDesc :: (Field a) -> Text
-fieldDesc (Field {fieldName, fieldDoc}) = "---@field " <> (decodeName fieldName) <> " " <> docs fieldDoc
+fieldDesc :: Field a -> Text
+fieldDesc (Field {fieldName, fieldDoc}) = "---@field " <> decodeName fieldName <> " " <> docs fieldDoc
   where
-    docs (FieldDoc {fieldDocDescription, fieldDocType}) = (T.pack $ typeSpecToString fieldDocType) <> " " <> fieldDocDescription
+    docs (FieldDoc {fieldDocDescription, fieldDocType}) = T.pack (typeSpecToString fieldDocType) <> " " <> fieldDocDescription
 
 functionDesc :: FunctionDoc -> Text
 functionDesc (FunDoc {funDocDescription}) = funDocDescription
@@ -40,12 +40,12 @@ paramsDesc :: FunctionDoc -> Text
 paramsDesc (FunDoc {funDocParameters}) = T.intercalate "\n" $ map paramDesc funDocParameters
 
 paramDesc :: ParameterDoc -> Text
-paramDesc (ParameterDoc {parameterName, parameterType, parameterDescription, parameterIsOptional}) = "---@param " <> parameterName <> (if parameterIsOptional then "?" else "") <> " " <> (T.pack $ typeSpecToString parameterType) <> " " <> parameterDescription
+paramDesc (ParameterDoc {parameterName, parameterType, parameterDescription, parameterIsOptional}) = "---@param " <> parameterName <> (if parameterIsOptional then "?" else "") <> " " <> T.pack (typeSpecToString parameterType) <> " " <> parameterDescription
 
 returnType :: FunctionDoc -> Text
 returnType (FunDoc {funDocResults}) = go funDocResults
   where
-    go (ResultsDocList (rs : [])) = resultValueDesc rs
+    go (ResultsDocList [rs]) = resultValueDesc rs
     go (ResultsDocList xs) = T.intercalate "|" $ map resultValueDesc xs
     go (ResultsDocMult res) = res
 

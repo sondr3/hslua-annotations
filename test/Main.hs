@@ -19,7 +19,7 @@ tests =
   testGroup
     "Spec"
     [ goldenVsString "factorial" "test/golden/factorial.lua" (pure $ encodeUtf8 (fromStrict $ annotateFunction factorial)),
-      goldenVsString "path" "test/golden/path.lua" (pure $ encodeUtf8 $ (fromStrict $ annotateModule documentedModule))
+      goldenVsString "path" "test/golden/path.lua" (pure $ encodeUtf8 $ fromStrict (annotateModule documentedModule))
     ]
 
 factorial :: DocumentedFunction Lua.Exception
