@@ -12,19 +12,23 @@ import HsLua.Core qualified as Lua
 import HsLua.Packaging
 
 annotateFunction :: DocumentedFunction a -> Text
-annotateFunction (DocumentedFunction {functionName, functionDoc}) = do
+annotateFunction = annotateMethod Nothing
+
+annotateMethod :: Maybe Name -> DocumentedFunction a -> Text
+annotateMethod parent (DocumentedFunction {functionName, functionDoc}) = do
   let name = decodeName functionName
       desc = functionDesc functionDoc
       typ = returnType functionDoc
       paramAnn = paramsDesc functionDoc
       params = T.intercalate ", " $ paramNames functionDoc
+      paren = maybe "" (\n -> decodeName n <> ".") parent
    in T.unlines $
         filter
           (not . T.null)
           [ "---" <> desc,
             paramAnn,
             "---@return " <> typ,
-            "function " <> name <> "(" <> params <> ")"
+            "function " <> paren <> name <> "(" <> params <> ")"
           ]
 
 annotateModule :: Module Lua.Exception -> Text
@@ -38,24 +42,8 @@ annotateModule (Module {moduleName, moduleDescription, moduleFields, moduleFunct
         T.intercalate "\n" (map fieldDesc moduleFields),
         T.intercalate "\n" (map opDesc moduleOperations),
         "local " <> decodeName moduleName <> " = {}\n",
-        T.intercalate "\n" (map (moduleFuncDesc moduleName) moduleFunctions)
+        T.intercalate "\n" (map (annotateMethod $ Just moduleName) moduleFunctions)
       ]
-
-moduleFuncDesc :: Name -> DocumentedFunction a -> Text
-moduleFuncDesc moduleName (DocumentedFunction {functionName, functionDoc}) = do
-  let name = decodeName functionName
-      desc = functionDesc functionDoc
-      typ = returnType functionDoc
-      paramAnn = paramsDesc functionDoc
-      params = T.intercalate ", " $ paramNames functionDoc
-   in T.unlines $
-        filter
-          (not . T.null)
-          [ "---" <> desc,
-            paramAnn,
-            "---@return " <> typ,
-            "function " <> decodeName moduleName <> "." <> name <> "(" <> params <> ")"
-          ]
 
 opDesc :: (Operation, DocumentedFunction a) -> Text
 opDesc (op, DocumentedFunction {functionDoc}) = "---@operator " <> opName op <> ":" <> returnType functionDoc
