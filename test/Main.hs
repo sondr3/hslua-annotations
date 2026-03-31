@@ -2,7 +2,12 @@ module Main (main) where
 
 import Data.Text.Lazy (fromStrict)
 import Data.Text.Lazy.Encoding (encodeUtf8)
-import HsLua.Annotations (annotateFunction, factorial)
+import Data.Version (makeVersion)
+import HsLua.Annotations (annotateFunction, annotateModule)
+import HsLua.Core qualified as Lua
+import HsLua.Marshalling (peekIntegral, pushIntegral)
+import HsLua.Module.Path (documentedModule)
+import HsLua.Packaging
 import Test.Tasty (TestTree, defaultMain, testGroup)
 import Test.Tasty.Golden
 
@@ -13,7 +18,8 @@ tests :: TestTree
 tests =
   testGroup
     "Spec"
-    [ goldenVsString "factorial" "test/golden/factorial.lua" (pure $ encodeUtf8 (fromStrict $ annotateFunction factorial))
+    [ goldenVsString "factorial" "test/golden/factorial.lua" (pure $ encodeUtf8 (fromStrict $ annotateFunction factorial)),
+      goldenVsString "path" "test/golden/path.lua" (pure $ encodeUtf8 $ (fromStrict $ annotateModule documentedModule))
     ]
 
 factorial :: DocumentedFunction Lua.Exception

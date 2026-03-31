@@ -68,6 +68,7 @@ test-suite hslua-annotations-golden
   main-is: Main.hs
   build-depends:
     hslua-annotations,
+    hslua-module-path ^>=1.2,
     tasty ^>=1.5,
     tasty-golden ^>=2.3,
 

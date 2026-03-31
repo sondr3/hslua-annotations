@@ -20,6 +20,14 @@ annotateFunction (DocumentedFunction {functionName, functionDoc}) = do
       params = T.intercalate ", " $ paramNames functionDoc
   "---" <> desc <> "\n" <> paramAnn <> "\n" <> "---@return " <> typ <> "\n" <> "function " <> name <> "(" <> params <> ")"
 
+annotateModule :: Module Lua.Exception -> Text
+annotateModule (Module {moduleName, moduleDescription, moduleFields, moduleFunctions}) = "---@meta " <> (decodeName moduleName) <> "\n" <> "---" <> moduleDescription <> "\n\n" <> "---@class (exact) " <> (decodeName moduleName) <> "\n" <> (T.intercalate "\n" $ map fieldDesc moduleFields) <> "\n" <> "local " <> (decodeName moduleName) <> " = {}"
+
+fieldDesc :: (Field a) -> Text
+fieldDesc (Field {fieldName, fieldDoc}) = "---@field " <> (decodeName fieldName) <> " " <> docs fieldDoc
+  where
+    docs (FieldDoc {fieldDocDescription, fieldDocType}) = (T.pack $ typeSpecToString fieldDocType) <> " " <> fieldDocDescription
+
 functionDesc :: FunctionDoc -> Text
 functionDesc (FunDoc {funDocDescription}) = funDocDescription
 
