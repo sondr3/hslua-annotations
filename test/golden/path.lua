@@ -4,7 +4,6 @@
 ---@class (exact) path
 ---@field separator string The character that separates directories.
 ---@field search_path_separator string The character that is used to separate the entries in the `PATH` environment variable.
-
 local path = {}
 
 ---Gets the directory name, i.e., removes the last directory separator and everything after from the given path.
@@ -68,7 +67,6 @@ function path.split_extension(filepath)
 function path.split_search_path(search_path)
 
 ---Augment the string module such that strings can be used as path objects.
-
 ---@return 
 function path.treat_strings_as_paths()
 

@@ -2,7 +2,6 @@
 ---Version specifier handling
 
 ---@class (exact) Version
-
 ---@operator call:Version
 local Version = {}
 

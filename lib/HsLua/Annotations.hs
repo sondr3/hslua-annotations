@@ -18,24 +18,28 @@ annotateFunction (DocumentedFunction {functionName, functionDoc}) = do
       typ = returnType functionDoc
       paramAnn = paramsDesc functionDoc
       params = T.intercalate ", " $ paramNames functionDoc
-   in T.unlines
-        [ "---" <> desc,
-          paramAnn,
-          "---@return " <> typ,
-          "function " <> name <> "(" <> params <> ")"
-        ]
+   in T.unlines $
+        filter
+          (not . T.null)
+          [ "---" <> desc,
+            paramAnn,
+            "---@return " <> typ,
+            "function " <> name <> "(" <> params <> ")"
+          ]
 
 annotateModule :: Module Lua.Exception -> Text
 annotateModule (Module {moduleName, moduleDescription, moduleFields, moduleFunctions, moduleOperations}) =
-  T.unlines
-    [ "---@meta " <> decodeName moduleName,
-      "---" <> moduleDescription <> "\n",
-      "---@class (exact) " <> decodeName moduleName,
-      T.intercalate "\n" (map fieldDesc moduleFields),
-      T.intercalate "\n" (map opDesc moduleOperations),
-      "local " <> decodeName moduleName <> " = {}\n",
-      T.intercalate "\n" (map (moduleFuncDesc moduleName) moduleFunctions)
-    ]
+  T.unlines $
+    filter
+      (not . T.null)
+      [ "---@meta " <> decodeName moduleName,
+        "---" <> moduleDescription <> "\n",
+        "---@class (exact) " <> decodeName moduleName,
+        T.intercalate "\n" (map fieldDesc moduleFields),
+        T.intercalate "\n" (map opDesc moduleOperations),
+        "local " <> decodeName moduleName <> " = {}\n",
+        T.intercalate "\n" (map (moduleFuncDesc moduleName) moduleFunctions)
+      ]
 
 moduleFuncDesc :: Name -> DocumentedFunction a -> Text
 moduleFuncDesc moduleName (DocumentedFunction {functionName, functionDoc}) = do
@@ -44,12 +48,14 @@ moduleFuncDesc moduleName (DocumentedFunction {functionName, functionDoc}) = do
       typ = returnType functionDoc
       paramAnn = paramsDesc functionDoc
       params = T.intercalate ", " $ paramNames functionDoc
-   in T.unlines
-        [ "---" <> desc,
-          paramAnn,
-          "---@return " <> typ,
-          "function " <> decodeName moduleName <> "." <> name <> "(" <> params <> ")"
-        ]
+   in T.unlines $
+        filter
+          (not . T.null)
+          [ "---" <> desc,
+            paramAnn,
+            "---@return " <> typ,
+            "function " <> decodeName moduleName <> "." <> name <> "(" <> params <> ")"
+          ]
 
 opDesc :: (Operation, DocumentedFunction a) -> Text
 opDesc (op, DocumentedFunction {functionDoc}) = "---@operator " <> opName op <> ":" <> returnType functionDoc
