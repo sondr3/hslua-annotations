@@ -66,7 +66,7 @@ import HsLua.Packaging
 --
 -- @since 0.1.0
 annotateFunction :: DocumentedFunction a -> Text
-annotateFunction = annotateMethod Nothing
+annotateFunction = annotateFunction' Nothing
 
 -- | Create type annotations for a documented module.
 --
@@ -113,11 +113,11 @@ annotateModule (Module {moduleName, moduleDescription, moduleFields, moduleFunct
         T.intercalate "\n" (map fieldDesc moduleFields),
         T.intercalate "\n" (map opDesc moduleOperations),
         "local " <> decodeName moduleName <> " = {}\n",
-        T.intercalate "\n" (map (annotateMethod $ Just moduleName) moduleFunctions)
+        T.intercalate "\n" (map (annotateFunction' $ Just moduleName) moduleFunctions)
       ]
 
-annotateMethod :: Maybe Name -> DocumentedFunction a -> Text
-annotateMethod parent (DocumentedFunction {functionName, functionDoc}) = do
+annotateFunction' :: Maybe Name -> DocumentedFunction a -> Text
+annotateFunction' parent (DocumentedFunction {functionName, functionDoc}) = do
   let name = decodeName functionName
       desc = functionDesc functionDoc
       typ = returnType functionDoc
