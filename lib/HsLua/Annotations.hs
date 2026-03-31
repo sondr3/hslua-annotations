@@ -21,7 +21,16 @@ annotateFunction (DocumentedFunction {functionName, functionDoc}) = do
   "---" <> desc <> "\n" <> paramAnn <> "\n" <> "---@return " <> typ <> "\n" <> "function " <> name <> "(" <> params <> ")"
 
 annotateModule :: Module Lua.Exception -> Text
-annotateModule (Module {moduleName, moduleDescription, moduleFields, moduleFunctions}) = "---@meta " <> decodeName moduleName <> "\n" <> "---" <> moduleDescription <> "\n\n" <> "---@class (exact) " <> decodeName moduleName <> "\n" <> T.intercalate "\n" (map fieldDesc moduleFields) <> "\n" <> "local " <> decodeName moduleName <> " = {}"
+annotateModule (Module {moduleName, moduleDescription, moduleFields, moduleFunctions}) = "---@meta " <> decodeName moduleName <> "\n" <> "---" <> moduleDescription <> "\n\n" <> "---@class (exact) " <> decodeName moduleName <> "\n" <> T.intercalate "\n" (map fieldDesc moduleFields) <> "\n" <> "local " <> decodeName moduleName <> " = {}\n\n" <> T.intercalate "\n\n" (map (moduleFuncDesc moduleName) moduleFunctions)
+
+moduleFuncDesc :: Name -> DocumentedFunction a -> Text
+moduleFuncDesc moduleName (DocumentedFunction {functionName, functionDoc}) = do
+  let name = decodeName functionName
+      desc = functionDesc functionDoc
+      typ = returnType functionDoc
+      paramAnn = paramsDesc functionDoc
+      params = T.intercalate ", " $ paramNames functionDoc
+  "---" <> desc <> "\n" <> paramAnn <> "\n" <> "---@return " <> typ <> "\n" <> "function " <> decodeName moduleName <> "." <> name <> "(" <> params <> ")"
 
 fieldDesc :: Field a -> Text
 fieldDesc (Field {fieldName, fieldDoc}) = "---@field " <> decodeName fieldName <> " " <> docs fieldDoc
