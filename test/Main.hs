@@ -1,5 +1,6 @@
 module Main (main) where
 
+import Data.Text (Text)
 import Data.Text.Lazy (fromStrict)
 import Data.Text.Lazy.Encoding (encodeUtf8)
 import Data.Version (makeVersion)
@@ -20,9 +21,12 @@ tests =
   testGroup
     "Spec"
     [ goldenVsString "factorial" "test/golden/factorial.lua" (pure $ encodeUtf8 (fromStrict $ annotateFunction factorial)),
-      goldenVsString "path" "test/golden/path.lua" (pure $ encodeUtf8 $ fromStrict (annotateModule Path.documentedModule)),
-      goldenVsString "version" "test/golden/version.lua" (pure $ encodeUtf8 $ fromStrict (annotateModule Version.documentedModule))
+      goldenVsString "path" "test/golden/path.lua" (pure $ encodeUtf8 $ fromStrict (annModule Path.documentedModule)),
+      goldenVsString "version" "test/golden/version.lua" (pure $ encodeUtf8 $ fromStrict (annModule Version.documentedModule))
     ]
+  where
+    annModule :: Module Lua.Exception -> Text
+    annModule = annotateModule
 
 factorial :: DocumentedFunction Lua.Exception
 factorial =
