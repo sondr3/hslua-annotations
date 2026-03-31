@@ -19,6 +19,9 @@
 
 </details>
 
+This is a small library to generate [LuaLS](https://luals.github.io/wiki/annotations) and [EmmyLua](https://github.com/EmmyLuaLs/emmylua-analyzer-rust/blob/main/docs/emmylua_doc/annotations_EN/README.md) 
+annotations from HsLua.
+
 ## License
 
 This project is licensed under either of
