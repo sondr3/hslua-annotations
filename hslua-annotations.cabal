@@ -50,10 +50,7 @@ common config
   build-depends:
     base >=4.12 && <5,
     hslua-core ^>=2.3,
-    hslua-marshalling ^>=2.3,
-    hslua-objectorientation ^>=2.5,
     hslua-packaging ^>=2.4,
-    hslua-typing ^>=0.2,
     text ^>=2,
 
 library
@@ -69,6 +66,7 @@ test-suite hslua-annotations-golden
   main-is: Main.hs
   build-depends:
     hslua-annotations,
+    hslua-marshalling ^>=2.3,
     hslua-module-path ^>=1.2,
     hslua-module-version ^>=1.2,
     tasty ^>=1.5,
