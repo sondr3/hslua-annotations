@@ -18,10 +18,23 @@ annotateFunction (DocumentedFunction {functionName, functionDoc}) = do
       typ = returnType functionDoc
       paramAnn = paramsDesc functionDoc
       params = T.intercalate ", " $ paramNames functionDoc
-  "---" <> desc <> "\n" <> paramAnn <> "\n" <> "---@return " <> typ <> "\n" <> "function " <> name <> "(" <> params <> ")"
+   in T.unlines
+        [ "---" <> desc,
+          paramAnn,
+          "---@return " <> typ,
+          "function " <> name <> "(" <> params <> ")"
+        ]
 
 annotateModule :: Module Lua.Exception -> Text
-annotateModule (Module {moduleName, moduleDescription, moduleFields, moduleFunctions}) = "---@meta " <> decodeName moduleName <> "\n" <> "---" <> moduleDescription <> "\n\n" <> "---@class (exact) " <> decodeName moduleName <> "\n" <> T.intercalate "\n" (map fieldDesc moduleFields) <> "\n" <> "local " <> decodeName moduleName <> " = {}\n\n" <> T.intercalate "\n\n" (map (moduleFuncDesc moduleName) moduleFunctions)
+annotateModule (Module {moduleName, moduleDescription, moduleFields, moduleFunctions}) =
+  T.unlines
+    [ "---@meta " <> decodeName moduleName,
+      "---" <> moduleDescription <> "\n",
+      "---@class (exact) " <> decodeName moduleName,
+      T.intercalate "\n" (map fieldDesc moduleFields),
+      "local " <> decodeName moduleName <> " = {}\n",
+      T.intercalate "\n" (map (moduleFuncDesc moduleName) moduleFunctions)
+    ]
 
 moduleFuncDesc :: Name -> DocumentedFunction a -> Text
 moduleFuncDesc moduleName (DocumentedFunction {functionName, functionDoc}) = do
@@ -30,7 +43,12 @@ moduleFuncDesc moduleName (DocumentedFunction {functionName, functionDoc}) = do
       typ = returnType functionDoc
       paramAnn = paramsDesc functionDoc
       params = T.intercalate ", " $ paramNames functionDoc
-  "---" <> desc <> "\n" <> paramAnn <> "\n" <> "---@return " <> typ <> "\n" <> "function " <> decodeName moduleName <> "." <> name <> "(" <> params <> ")"
+   in T.unlines
+        [ "---" <> desc,
+          paramAnn,
+          "---@return " <> typ,
+          "function " <> decodeName moduleName <> "." <> name <> "(" <> params <> ")"
+        ]
 
 fieldDesc :: Field a -> Text
 fieldDesc (Field {fieldName, fieldDoc}) = "---@field " <> decodeName fieldName <> " " <> docs fieldDoc
@@ -49,7 +67,10 @@ paramsDesc :: FunctionDoc -> Text
 paramsDesc (FunDoc {funDocParameters}) = T.intercalate "\n" $ map paramDesc funDocParameters
 
 paramDesc :: ParameterDoc -> Text
-paramDesc (ParameterDoc {parameterName, parameterType, parameterDescription, parameterIsOptional}) = "---@param " <> parameterName <> (if parameterIsOptional then "?" else "") <> " " <> T.pack (typeSpecToString parameterType) <> " " <> parameterDescription
+paramDesc (ParameterDoc {parameterName, parameterType, parameterDescription, parameterIsOptional}) = do
+  let isOpt = if parameterIsOptional then "?" else ""
+      typ = T.pack (typeSpecToString parameterType)
+   in "---@param " <> parameterName <> isOpt <> " " <> typ <> " " <> parameterDescription
 
 returnType :: FunctionDoc -> Text
 returnType (FunDoc {funDocResults}) = go funDocResults
