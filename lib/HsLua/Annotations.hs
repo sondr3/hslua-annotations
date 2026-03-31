@@ -1,16 +1,14 @@
 module HsLua.Annotations
   ( annotateFunction,
-    factorial,
+    annotateModule,
   )
 where
 
 import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Text.Encoding (decodeUtf8)
-import Data.Version (makeVersion)
 import HsLua.Core (Name (..))
 import HsLua.Core qualified as Lua
-import HsLua.Marshalling (peekIntegral, pushIntegral)
 import HsLua.Packaging
 
 annotateFunction :: DocumentedFunction a -> Text
@@ -48,11 +46,3 @@ resultValueDesc (ResultValueDoc {resultValueType}) = T.pack $ typeSpecToString r
 
 decodeName :: Name -> Text
 decodeName = decodeUtf8 . fromName
-
-factorial :: DocumentedFunction Lua.Exception
-factorial =
-  defun "factorial" (liftPure $ \n -> product [1 .. n] :: Integer)
-    <#> parameter peekIntegral "integer" "n" ""
-    =#> functionResult pushIntegral "integer" "factorial"
-    #? "Calculates the factorial of a positive integer."
-    `since` makeVersion [1, 0, 0]
