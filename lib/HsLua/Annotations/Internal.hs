@@ -8,6 +8,7 @@ import Data.Char (toLower)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Text.Encoding (decodeUtf8)
+import HsLua.Annotations.Shared (nameToText)
 import HsLua.Core (Name (..), Type (..))
 import HsLua.Packaging
 
@@ -79,23 +80,23 @@ annotateModule (Module {moduleName, moduleDescription, moduleFields, moduleFunct
   T.unlines $
     filter
       (not . T.null)
-      [ "---@meta " <> decodeName moduleName,
+      [ "---@meta " <> nameToText moduleName,
         "---" <> moduleDescription <> "\n",
-        "---@class (exact) " <> decodeName moduleName,
+        "---@class (exact) " <> nameToText moduleName,
         T.intercalate "\n" (map fieldDesc moduleFields),
         T.intercalate "\n" (map opDesc moduleOperations),
-        "local " <> decodeName moduleName <> " = {}\n",
+        "local " <> nameToText moduleName <> " = {}\n",
         T.intercalate "\n" (map (annotateFunction' $ Just moduleName) moduleFunctions)
       ]
 
 annotateFunction' :: Maybe Name -> DocumentedFunction a -> Text
 annotateFunction' parent (DocumentedFunction {functionName, functionDoc}) = do
-  let name = decodeName functionName
+  let name = nameToText functionName
       desc = functionDesc functionDoc
       typ = returnType functionDoc
       paramAnn = paramsDesc functionDoc
       params = T.intercalate ", " $ paramNames functionDoc
-      paren = maybe "" (\n -> decodeName n <> ".") parent
+      paren = maybe "" (\n -> nameToText n <> ".") parent
    in T.unlines $
         filter
           (not . T.null)
@@ -109,7 +110,7 @@ opDesc :: (Operation, DocumentedFunction a) -> Text
 opDesc (op, DocumentedFunction {functionDoc}) = "---@operator " <> opName op <> ":" <> returnType functionDoc
 
 fieldDesc :: Field a -> Text
-fieldDesc (Field {fieldName, fieldDoc}) = "---@field " <> decodeName fieldName <> " " <> docs fieldDoc
+fieldDesc (Field {fieldName, fieldDoc}) = "---@field " <> nameToText fieldName <> " " <> docs fieldDoc
   where
     docs (FieldDoc {fieldDocDescription, fieldDocType}) = typeToText fieldDocType <> " " <> fieldDocDescription
 
@@ -181,7 +182,4 @@ opName = \case
   Call -> "call"
   Tostring -> "tostring"
   Pairs -> "pairs"
-  CustomOperation x -> decodeName x
-
-decodeName :: Name -> Text
-decodeName = decodeUtf8 . fromName
+  CustomOperation x -> nameToText x
