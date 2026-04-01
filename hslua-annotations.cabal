@@ -51,7 +51,7 @@ common config
     base >=4.12 && <5,
     hslua-core ^>=2.3,
     hslua-packaging ^>=2.4,
-    text ^>=2,
+    text >=2 && <3,
 
 library
   import: config
