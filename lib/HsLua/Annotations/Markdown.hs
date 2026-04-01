@@ -8,7 +8,7 @@ import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Text.Encoding qualified as T
 import Data.Version (showVersion)
-import HsLua.Annotations.Shared (nameToText)
+import HsLua.Annotations.Shared (nameToText, typeToText)
 import HsLua.Core
 import HsLua.Core.Utf8 qualified as Utf8
 import HsLua.Packaging
@@ -72,16 +72,18 @@ renderFields fs =
   if null fs
     then mempty
     else
-      mconcat
-        [ "\n",
-          T.intercalate "\n\n" (map (("### " <>) . renderField) fs)
+      T.unlines
+        [ "## Fields",
+          "| Name | Type | Description |",
+          "| ---- | ---- | ----------- |",
+          T.intercalate "\n" (map renderField fs)
         ]
 
 -- | Renders documentation for a single field.
 renderField :: Field e -> Text
-renderField (Field {fieldName, fieldDoc}) = nameToText fieldName <> "\n\n" <> docs fieldDoc
+renderField (Field {fieldName, fieldDoc}) = "| `" <> nameToText fieldName <> "` | " <> desc fieldDoc <> " |"
   where
-    docs (FieldDoc {fieldDocDescription}) = fieldDocDescription
+    desc (FieldDoc {fieldDocDescription, fieldDocType}) = "`" <> typeToText fieldDocType <> "` | " <> fieldDocDescription
 
 --
 -- Function documentation
