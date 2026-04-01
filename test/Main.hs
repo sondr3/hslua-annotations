@@ -4,7 +4,7 @@ import Data.Text (Text)
 import Data.Text.Lazy (fromStrict)
 import Data.Text.Lazy.Encoding (encodeUtf8)
 import Data.Version (makeVersion)
-import HsLua.Annotations (annotateFunction, annotateModule)
+import HsLua.Annotations (annotateFunction, annotateModule, documentFunction, documentModule)
 import HsLua.Core qualified as Lua
 import HsLua.Marshalling (peekIntegral, pushIntegral)
 import HsLua.Module.Path qualified as Path
@@ -17,9 +17,12 @@ main :: IO ()
 main = defaultMain tests
 
 tests :: TestTree
-tests =
+tests = testGroup "Tests" [annotations, markdown]
+
+annotations :: TestTree
+annotations =
   testGroup
-    "Spec"
+    "Annotations"
     [ goldenVsString "factorial" "test/golden/factorial.lua" (pure $ encodeUtf8 (fromStrict $ annotateFunction factorial)),
       goldenVsString "path" "test/golden/path.lua" (pure $ encodeUtf8 $ fromStrict (annModule Path.documentedModule)),
       goldenVsString "version" "test/golden/version.lua" (pure $ encodeUtf8 $ fromStrict (annModule Version.documentedModule))
@@ -27,6 +30,18 @@ tests =
   where
     annModule :: Module Lua.Exception -> Text
     annModule = annotateModule
+
+markdown :: TestTree
+markdown =
+  testGroup
+    "Markdown"
+    [ goldenVsString "factorial" "test/golden/factorial.md" (pure $ encodeUtf8 (fromStrict $ documentFunction factorial)),
+      goldenVsString "path" "test/golden/path.md" (pure $ encodeUtf8 $ fromStrict (docModule Path.documentedModule)),
+      goldenVsString "version" "test/golden/version.md" (pure $ encodeUtf8 $ fromStrict (docModule Version.documentedModule))
+    ]
+  where
+    docModule :: Module Lua.Exception -> Text
+    docModule = documentModule
 
 factorial :: DocumentedFunction Lua.Exception
 factorial =
