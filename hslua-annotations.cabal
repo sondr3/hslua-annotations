@@ -61,6 +61,7 @@ library
 
   other-modules:
     HsLua.Annotations.Internal
+    HsLua.Annotations.Markdown
 
 test-suite hslua-annotations-golden
   import: config

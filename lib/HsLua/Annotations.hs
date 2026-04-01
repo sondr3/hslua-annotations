@@ -28,9 +28,17 @@
 -- __import__ HsLua.Annotations
 -- @
 module HsLua.Annotations
-  ( annotateFunction,
+  ( -- * Type annotation
+    annotateFunction,
     annotateModule,
+
+    -- * Markdown rendering
+    documentFunction,
+    documentModule,
   )
 where
 
+--
+
 import HsLua.Annotations.Internal (annotateFunction, annotateModule)
+import HsLua.Annotations.Markdown (documentFunction, documentModule)
