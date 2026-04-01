@@ -33,10 +33,11 @@ module HsLua.Annotations
   )
 where
 
+import Data.Char (toLower)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Text.Encoding (decodeUtf8)
-import HsLua.Core (Name (..))
+import HsLua.Core (Name (..), Type (..))
 import HsLua.Packaging
 
 -- | Create type annotations for a documented function.
@@ -139,7 +140,7 @@ opDesc (op, DocumentedFunction {functionDoc}) = "---@operator " <> opName op <> 
 fieldDesc :: Field a -> Text
 fieldDesc (Field {fieldName, fieldDoc}) = "---@field " <> decodeName fieldName <> " " <> docs fieldDoc
   where
-    docs (FieldDoc {fieldDocDescription, fieldDocType}) = T.pack (typeSpecToString fieldDocType) <> " " <> fieldDocDescription
+    docs (FieldDoc {fieldDocDescription, fieldDocType}) = typeToText fieldDocType <> " " <> fieldDocDescription
 
 functionDesc :: FunctionDoc -> Text
 functionDesc (FunDoc {funDocDescription}) = funDocDescription
@@ -155,7 +156,7 @@ paramsDesc (FunDoc {funDocParameters}) = T.intercalate "\n" $ map paramDesc funD
 paramDesc :: ParameterDoc -> Text
 paramDesc (ParameterDoc {parameterName, parameterType, parameterDescription, parameterIsOptional}) = do
   let isOpt = if parameterIsOptional then "?" else ""
-      typ = T.pack (typeSpecToString parameterType)
+      typ = typeToText parameterType
    in "---@param " <> parameterName <> isOpt <> " " <> typ <> " " <> parameterDescription
 
 returnType :: FunctionDoc -> Text
@@ -166,7 +167,22 @@ returnType (FunDoc {funDocResults}) = go funDocResults
     go (ResultsDocMult res) = res
 
 resultValueDesc :: ResultValueDoc -> Text
-resultValueDesc (ResultValueDoc {resultValueType}) = T.pack $ typeSpecToString resultValueType
+resultValueDesc (ResultValueDoc {resultValueType}) = typeToText resultValueType
+
+typeToText :: TypeSpec -> Text
+typeToText = \case
+  BasicType t -> basicTypeName t
+  NamedType nt -> decodeUtf8 $ fromName nt
+  AnyType -> "any"
+  FunType {} -> "function"
+  RecType {} -> "table"
+  SeqType t -> typeToText t <> "[]"
+  SumType specs -> T.intercalate "|" (map typeToText specs)
+
+basicTypeName :: Type -> Text
+basicTypeName = \case
+  TypeLightUserdata -> "light userdata"
+  t -> T.pack $ map toLower . drop 4 $ show t
 
 opName :: Operation -> Text
 opName = \case

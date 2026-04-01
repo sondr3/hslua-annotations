@@ -27,7 +27,7 @@ function path.is_absolute(filepath)
 function path.is_relative(filepath)
 
 ---Join path elements back together by the directory separator.
----@param filepaths {string,...} path components
+---@param filepaths string[] path components
 ---@return string
 function path.join(filepaths)
 
@@ -53,7 +53,7 @@ function path.normalize(filepath)
 
 ---Splits a path by the directory separator.
 ---@param filepath string path
----@return {string,...}
+---@return string[]
 function path.split(filepath)
 
 ---Splits the last extension from a file path and returns the parts. The extension, if present, includes the leading separator; if the path has no extension, then the empty string is returned as the extension.
@@ -63,7 +63,7 @@ function path.split_extension(filepath)
 
 ---Takes a string and splits it on the `search_path_separator` character. Blank items are ignored on Windows, and converted to `.` on Posix. On Windows path elements are stripped of quotes.
 ---@param search_path string platform-specific search path
----@return {string,...}
+---@return string[]
 function path.split_search_path(search_path)
 
 ---Augment the string module such that strings can be used as path objects.
