@@ -56,8 +56,11 @@ common config
 library
   import: config
   hs-source-dirs: lib
-  -- cabal-gild: discover lib
-  exposed-modules: HsLua.Annotations
+  exposed-modules:
+    HsLua.Annotations
+
+  other-modules:
+    HsLua.Annotations.Internal
 
 test-suite hslua-annotations-golden
   import: config
