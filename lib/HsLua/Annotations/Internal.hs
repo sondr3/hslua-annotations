@@ -4,12 +4,10 @@ module HsLua.Annotations.Internal
   )
 where
 
-import Data.Char (toLower)
 import Data.Text (Text)
 import Data.Text qualified as T
-import Data.Text.Encoding (decodeUtf8)
-import HsLua.Annotations.Shared (nameToText)
-import HsLua.Core (Name (..), Type (..))
+import HsLua.Annotations.Shared (nameToText, typeToText)
+import HsLua.Core (Name (..))
 import HsLua.Packaging
 
 -- | Create type annotations for a documented function.
@@ -140,21 +138,6 @@ returnType (FunDoc {funDocResults}) = go funDocResults
 
 resultValueDesc :: ResultValueDoc -> Text
 resultValueDesc (ResultValueDoc {resultValueType}) = typeToText resultValueType
-
-typeToText :: TypeSpec -> Text
-typeToText = \case
-  BasicType t -> basicTypeName t
-  NamedType nt -> decodeUtf8 $ fromName nt
-  AnyType -> "any"
-  FunType {} -> "function"
-  RecType {} -> "table"
-  SeqType t -> typeToText t <> "[]"
-  SumType specs -> T.intercalate "|" (map typeToText specs)
-
-basicTypeName :: Type -> Text
-basicTypeName = \case
-  TypeLightUserdata -> "light userdata"
-  t -> T.pack $ map toLower . drop 4 $ show t
 
 opName :: Operation -> Text
 opName = \case
