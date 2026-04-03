@@ -1,10 +1,23 @@
 # `path`
 Module for file path manipulations.
+
 ## Fields
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| `separator` | `string` | The character that separates directories. |
-| `search_path_separator` | `string` | The character that is used to separate the entries in the `PATH` environment variable. |
+
+### `separator`
+The character that separates directories.
+
+```lua
+path.separator
+```
+
+
+### `search_path_separator`
+The character that is used to separate the entries in the `PATH` environment variable.
+
+```lua
+path.search_path_separator
+```
+
 
 
 ## Functions

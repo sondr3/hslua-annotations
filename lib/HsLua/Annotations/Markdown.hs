@@ -24,7 +24,7 @@ renderModule (Module {moduleFields, moduleName, moduleDescription, moduleFunctio
     [ "# `" <> nameToText moduleName <> "`",
       "",
       moduleDescription,
-      renderFields moduleFields,
+      renderFields moduleName moduleFields,
       renderFunctions moduleFunctions
     ]
 
@@ -56,22 +56,23 @@ renderFunctionParams (FunDoc {funDocParameters}) =
   where
     param (ParameterDoc {parameterName}) = parameterName
 
-renderFields :: [Field e] -> Text
-renderFields fs =
+renderFields :: Name -> [Field e] -> Text
+renderFields name fs =
   if null fs
     then mempty
     else
-      T.unlines
-        [ "## Fields",
-          "| Name | Type | Description |",
-          "| ---- | ---- | ----------- |",
-          T.intercalate "\n" (map renderField fs)
+      unlinesNonEmpty
+        [ "\n## Fields",
+          T.intercalate "\n" (map (renderField name) fs)
         ]
 
-renderField :: Field e -> Text
-renderField (Field {fieldName, fieldDoc}) = "| `" <> nameToText fieldName <> "` | " <> desc fieldDoc <> " |"
-  where
-    desc (FieldDoc {fieldDocDescription, fieldDocType}) = "`" <> typeToText fieldDocType <> "` | " <> fieldDocDescription
+renderField :: Name -> Field e -> Text
+renderField name (Field {fieldName, fieldDoc}) = do
+  unlinesNonEmpty
+    [ "\n### `" <> nameToText fieldName <> "`",
+      fieldDocDescription fieldDoc,
+      "\n```lua\n" <> nameToText name <> "." <> nameToText fieldName <> "\n```"
+    ]
 
 renderFunctionDoc :: FunctionDoc -> Text
 renderFunctionDoc (FunDoc {funDocDescription, funDocSince, funDocParameters, funDocResults}) =
