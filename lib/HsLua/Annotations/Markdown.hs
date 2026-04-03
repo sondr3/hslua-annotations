@@ -22,6 +22,7 @@ renderModule :: Module e -> Text
 renderModule (Module {moduleFields, moduleName, moduleDescription, moduleFunctions}) =
   T.unlines
     [ "# " <> nameToText moduleName,
+    [ "# `" <> nameToText moduleName <> "`",
       "",
       moduleDescription,
       renderFields moduleFields,

@@ -1,7 +1,5 @@
-# Version
-
+# `Version`
 Version specifier handling
-
 
 ## Functions
 

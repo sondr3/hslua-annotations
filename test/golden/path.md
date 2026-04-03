@@ -1,5 +1,4 @@
-# path
-
+# `path`
 Module for file path manipulations.
 ## Fields
 | Name | Type | Description |
