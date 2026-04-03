@@ -7,7 +7,7 @@ where
 import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Version (showVersion)
-import HsLua.Annotations.Shared (nameToText, typeToText)
+import HsLua.Annotations.Shared (nameToText, typeToText, unlinesNonEmpty)
 import HsLua.Core
 import HsLua.Core.Utf8 qualified as Utf8
 import HsLua.Packaging
@@ -20,8 +20,7 @@ documentModule = renderModule
 
 renderModule :: Module e -> Text
 renderModule (Module {moduleFields, moduleName, moduleDescription, moduleFunctions}) =
-  T.unlines
-    [ "# " <> nameToText moduleName,
+  unlinesNonEmpty
     [ "# `" <> nameToText moduleName <> "`",
       "",
       moduleDescription,

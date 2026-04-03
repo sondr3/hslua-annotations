@@ -6,7 +6,7 @@ where
 
 import Data.Text (Text)
 import Data.Text qualified as T
-import HsLua.Annotations.Shared (nameToText, typeToText)
+import HsLua.Annotations.Shared (nameToText, typeToText, unlinesNonEmpty)
 import HsLua.Core (Name (..))
 import HsLua.Packaging
 
@@ -75,17 +75,15 @@ annotateFunction = annotateFunction' Nothing
 -- @since 0.1.0
 annotateModule :: Module a -> Text
 annotateModule (Module {moduleName, moduleDescription, moduleFields, moduleFunctions, moduleOperations}) =
-  T.unlines $
-    filter
-      (not . T.null)
-      [ "---@meta " <> nameToText moduleName,
-        "---" <> moduleDescription <> "\n",
-        "---@class (exact) " <> nameToText moduleName,
-        T.intercalate "\n" (map fieldDesc moduleFields),
-        T.intercalate "\n" (map opDesc moduleOperations),
-        "local " <> nameToText moduleName <> " = {}\n",
-        T.intercalate "\n" (map (annotateFunction' $ Just moduleName) moduleFunctions)
-      ]
+  unlinesNonEmpty
+    [ "---@meta " <> nameToText moduleName,
+      "---" <> moduleDescription <> "\n",
+      "---@class (exact) " <> nameToText moduleName,
+      T.intercalate "\n" (map fieldDesc moduleFields),
+      T.intercalate "\n" (map opDesc moduleOperations),
+      "local " <> nameToText moduleName <> " = {}\n",
+      T.intercalate "\n" (map (annotateFunction' $ Just moduleName) moduleFunctions)
+    ]
 
 annotateFunction' :: Maybe Name -> DocumentedFunction a -> Text
 annotateFunction' parent (DocumentedFunction {functionName, functionDoc}) = do
@@ -95,14 +93,12 @@ annotateFunction' parent (DocumentedFunction {functionName, functionDoc}) = do
       paramAnn = paramsDesc functionDoc
       params = T.intercalate ", " $ paramNames functionDoc
       paren = maybe "" (\n -> nameToText n <> ".") parent
-   in T.unlines $
-        filter
-          (not . T.null)
-          [ if T.null desc then "" else "---" <> desc,
-            paramAnn,
-            "---@return " <> typ,
-            "function " <> paren <> name <> "(" <> params <> ")"
-          ]
+   in unlinesNonEmpty
+        [ if T.null desc then "" else "---" <> desc,
+          paramAnn,
+          "---@return " <> typ,
+          "function " <> paren <> name <> "(" <> params <> ")"
+        ]
 
 opDesc :: (Operation, DocumentedFunction a) -> Text
 opDesc (op, DocumentedFunction {functionDoc}) = "---@operator " <> opName op <> ":" <> returnType functionDoc

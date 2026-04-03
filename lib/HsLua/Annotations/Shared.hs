@@ -1,6 +1,7 @@
 module HsLua.Annotations.Shared
   ( nameToText,
     typeToText,
+    unlinesNonEmpty,
   )
 where
 
@@ -10,6 +11,9 @@ import Data.Text qualified as T
 import Data.Text.Encoding (decodeUtf8)
 import HsLua.Core (Name (..), Type (..))
 import HsLua.Packaging (TypeSpec (..))
+
+unlinesNonEmpty :: [Text] -> Text
+unlinesNonEmpty xs = T.unlines $ filter (not . T.null) xs
 
 nameToText :: Name -> Text
 nameToText = decodeUtf8 . fromName
