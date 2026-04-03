@@ -39,14 +39,13 @@ function path.join(filepaths)
 function path.make_relative(path, root, unsafe)
 
 ---Normalizes a path.
-
- - `//` makes sense only as part of a (Windows) network drive;
-   elsewhere, multiple slashes are reduced to a single
-   `path.separator` (platform dependent).
- - `/` becomes `path.separator` (platform dependent).
- - `./` is removed.
- - an empty path becomes `.`
-
+---
+--- - `//` makes sense only as part of a (Windows) network drive;
+---   elsewhere, multiple slashes are reduced to a single
+---   `path.separator` (platform dependent).
+--- - `/` becomes `path.separator` (platform dependent).
+--- - `./` is removed.
+--- - an empty path becomes `.`
 ---@param filepath string path
 ---@return string
 function path.normalize(filepath)

@@ -94,7 +94,7 @@ annotateFunction' parent (DocumentedFunction {functionName, functionDoc}) = do
       params = T.intercalate ", " $ paramNames functionDoc
       paren = maybe "" (\n -> nameToText n <> ".") parent
    in unlinesNonEmpty
-        [ if T.null desc then "" else "---" <> desc,
+        [ if T.null desc then mempty else desc,
           paramAnn,
           "---@return " <> typ,
           "function " <> paren <> name <> "(" <> params <> ")"
@@ -109,7 +109,7 @@ fieldDesc (Field {fieldName, fieldDoc}) = "---@field " <> nameToText fieldName <
     docs (FieldDoc {fieldDocDescription, fieldDocType}) = typeToText fieldDocType <> " " <> fieldDocDescription
 
 functionDesc :: FunctionDoc -> Text
-functionDesc (FunDoc {funDocDescription}) = funDocDescription
+functionDesc (FunDoc {funDocDescription}) = T.strip . unlinesNonEmpty $ map ("---" <>) $ T.lines funDocDescription
 
 paramNames :: FunctionDoc -> [Text]
 paramNames (FunDoc {funDocParameters}) = map go funDocParameters
