@@ -67,11 +67,14 @@ renderFields name fs =
         ]
 
 renderField :: Name -> Field e -> Text
-renderField name (Field {fieldName, fieldDoc}) = do
+renderField modName (Field {fieldName, fieldDoc}) = do
+  let name = nameToText fieldName
+      parent = nameToText modName
+      typ = typeToText $ fieldDocType fieldDoc
   unlinesNonEmpty
-    [ "\n### `" <> nameToText fieldName <> "`",
+    [ "\n### `" <> name <> "`",
       fieldDocDescription fieldDoc,
-      "\n```lua\n" <> nameToText name <> "." <> nameToText fieldName <> "\n```"
+      "\n```lua\n" <> parent <> "." <> name <> ": " <> typ <> "\n```"
     ]
 
 renderFunctionDoc :: FunctionDoc -> Text

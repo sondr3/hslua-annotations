@@ -7,7 +7,7 @@ Module for file path manipulations.
 The character that separates directories.
 
 ```lua
-path.separator
+path.separator: string
 ```
 
 
@@ -15,7 +15,7 @@ path.separator
 The character that is used to separate the entries in the `PATH` environment variable.
 
 ```lua
-path.search_path_separator
+path.search_path_separator: string
 ```
 
 
