@@ -38,6 +38,10 @@ Returns:
 
  -  The filepath up to the last directory separator. (string)
 
+```lua
+function directory(filepath: string): string
+```
+
 
 ### `function filename(filepath)`
 
@@ -54,6 +58,10 @@ Get the file name.
 Returns:
 
  -  File name part of the input path. (string)
+
+```lua
+function filename(filepath: string): string
+```
 
 
 ### `function is_absolute(filepath)`
@@ -72,6 +80,10 @@ Returns:
 
  -  `true` iff `filepath` is an absolute path, `false` otherwise. (boolean)
 
+```lua
+function is_absolute(filepath: string): boolean
+```
+
 
 ### `function is_relative(filepath)`
 
@@ -89,6 +101,10 @@ Returns:
 
  -  `true` iff `filepath` is a relative path, `false` otherwise. (boolean)
 
+```lua
+function is_relative(filepath: string): boolean
+```
+
 
 ### `function join(filepaths)`
 
@@ -105,6 +121,10 @@ Join path elements back together by the directory separator.
 Returns:
 
  -  The joined path. (string)
+
+```lua
+function join(filepaths: string[]): string
+```
 
 
 ### `function make_relative(path, root, unsafe)`
@@ -124,6 +144,10 @@ Contract a filename, based on a relative path. Note that the resulting path will
 Returns:
 
  -  contracted filename (string)
+
+```lua
+function make_relative(path: string, root: string, unsafe: boolean): string
+```
 
 
 ### `function normalize(filepath)`
@@ -150,6 +174,10 @@ Returns:
 
  -  The normalized path. (string)
 
+```lua
+function normalize(filepath: string): string
+```
+
 
 ### `function split(filepath)`
 
@@ -166,6 +194,10 @@ Splits a path by the directory separator.
 Returns:
 
  -  List of all path components. ({string,...})
+
+```lua
+function split(filepath: string): string[]
+```
 
 
 ### `function split_extension(filepath)`
@@ -185,6 +217,10 @@ Returns:
  -  filepath without extension (string)
  -  extension or empty string (string)
 
+```lua
+function split_extension(filepath: string): string|string
+```
+
 
 ### `function split_search_path(search_path)`
 
@@ -202,6 +238,10 @@ Returns:
 
  -  list of directories in search path ({string,...})
 
+```lua
+function split_search_path(search_path: string): string[]
+```
+
 
 ### `function treat_strings_as_paths()`
 
@@ -210,4 +250,8 @@ Augment the string module such that strings can be used as path objects.
 *Since: 0.1.0*
 
 
+
+```lua
+function treat_strings_as_paths(): 
+```
 

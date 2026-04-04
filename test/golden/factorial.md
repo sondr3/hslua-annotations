@@ -13,3 +13,7 @@ Calculates the factorial of a positive integer.
 Returns:
 
  -  factorial (integer)
+
+```lua
+function factorial(n: integer): integer
+```

@@ -14,3 +14,7 @@ Version specifier handling
 | `msg` | `string?` | alternative message |
  -  Returns no result, and throws an error if this version is older than `reference`.
 
+```lua
+function must_be_at_least(self: Version, reference: Version, msg: string): Returns no result, and throws an error if this version is older than `reference`.
+```
+

@@ -2,6 +2,7 @@ module HsLua.Annotations.Shared
   ( nameToText,
     typeToText,
     unlinesNonEmpty,
+    returnType,
   )
 where
 
@@ -10,7 +11,7 @@ import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Text.Encoding (decodeUtf8)
 import HsLua.Core (Name (..), Type (..))
-import HsLua.Packaging (TypeSpec (..))
+import HsLua.Packaging
 
 unlinesNonEmpty :: [Text] -> Text
 unlinesNonEmpty xs = T.unlines $ filter (not . T.null) xs
@@ -32,3 +33,13 @@ basicTypeName :: Type -> Text
 basicTypeName = \case
   TypeLightUserdata -> "light userdata"
   t -> T.pack $ map toLower . drop 4 $ show t
+
+returnType :: FunctionDoc -> Text
+returnType (FunDoc {funDocResults}) = go funDocResults
+  where
+    go (ResultsDocList [rs]) = resultValueDesc rs
+    go (ResultsDocList xs) = T.intercalate "|" $ map resultValueDesc xs
+    go (ResultsDocMult res) = res
+
+resultValueDesc :: ResultValueDoc -> Text
+resultValueDesc (ResultValueDoc {resultValueType}) = typeToText resultValueType

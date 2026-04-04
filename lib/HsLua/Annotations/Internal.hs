@@ -6,7 +6,7 @@ where
 
 import Data.Text (Text)
 import Data.Text qualified as T
-import HsLua.Annotations.Shared (nameToText, typeToText, unlinesNonEmpty)
+import HsLua.Annotations.Shared (nameToText, returnType, typeToText, unlinesNonEmpty)
 import HsLua.Core (Name (..))
 import HsLua.Packaging
 
@@ -124,16 +124,6 @@ paramDesc (ParameterDoc {parameterName, parameterType, parameterDescription, par
   let isOpt = if parameterIsOptional then "?" else ""
       typ = typeToText parameterType
    in "---@param " <> parameterName <> isOpt <> " " <> typ <> " " <> parameterDescription
-
-returnType :: FunctionDoc -> Text
-returnType (FunDoc {funDocResults}) = go funDocResults
-  where
-    go (ResultsDocList [rs]) = resultValueDesc rs
-    go (ResultsDocList xs) = T.intercalate "|" $ map resultValueDesc xs
-    go (ResultsDocMult res) = res
-
-resultValueDesc :: ResultValueDoc -> Text
-resultValueDesc (ResultValueDoc {resultValueType}) = typeToText resultValueType
 
 opName :: Operation -> Text
 opName = \case

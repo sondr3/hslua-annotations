@@ -8,7 +8,7 @@ import Data.Bool (bool)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Version (showVersion)
-import HsLua.Annotations.Shared (nameToText, typeToText, unlinesNonEmpty)
+import HsLua.Annotations.Shared (nameToText, returnType, typeToText, unlinesNonEmpty)
 import HsLua.Core
 import HsLua.Core.Utf8 qualified as Utf8
 import HsLua.Packaging
@@ -42,7 +42,7 @@ renderFunction fn =
           else fnName
    in unlinesNonEmpty
         [ "`function " <> name <> "(" <> renderFunctionParams fnDoc <> ")" <> "`\n",
-          renderFunctionDoc fnDoc
+          renderFunctionDoc name fnDoc
         ]
 
 renderFunctionParams :: FunctionDoc -> Text
@@ -67,8 +67,8 @@ renderField modName (Field {fieldName, fieldDoc}) = do
       "\n```lua\n" <> parent <> "." <> name <> ": " <> typ <> "\n```"
     ]
 
-renderFunctionDoc :: FunctionDoc -> Text
-renderFunctionDoc (FunDoc {funDocDescription, funDocSince, funDocParameters, funDocResults}) =
+renderFunctionDoc :: Text -> FunctionDoc -> Text
+renderFunctionDoc name fd@(FunDoc {funDocDescription, funDocSince, funDocParameters, funDocResults}) =
   let sinceTag = case funDocSince of
         Nothing -> mempty
         Just version -> T.pack $ "\n\n*Since: " <> showVersion version <> "*"
@@ -78,9 +78,10 @@ renderFunctionDoc (FunDoc {funDocDescription, funDocSince, funDocParameters, fun
       )
         <> renderParamTable funDocParameters
         <> renderResultsDoc funDocResults
+        <> ("\n\n```lua\n" <> "function " <> name <> renderParamType funDocParameters <> ": " <> returnType fd <> "\n```")
 
 renderParamTable :: [ParameterDoc] -> Text
-renderParamTable [] = ""
+renderParamTable [] = mempty
 renderParamTable ps =
   T.unlines
     [ "#### Parameters\n",
@@ -88,6 +89,10 @@ renderParamTable ps =
       "| ---- | ---- | ----------- |",
       T.intercalate "\n" (map renderParamField ps)
     ]
+
+renderParamType :: [ParameterDoc] -> Text
+renderParamType [] = "()"
+renderParamType ps = "(" <> T.intercalate ", " (map (\p -> parameterName p <> ": " <> typeToText (parameterType p)) ps) <> ")"
 
 renderParamField :: ParameterDoc -> Text
 renderParamField (ParameterDoc {parameterName, parameterDescription, parameterType, parameterIsOptional}) =
