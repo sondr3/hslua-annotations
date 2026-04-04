@@ -22,18 +22,14 @@ renderModule :: Module e -> Text
 renderModule (Module {moduleFields, moduleName, moduleDescription, moduleFunctions}) =
   unlinesNonEmpty
     [ "# `" <> nameToText moduleName <> "`",
-      "",
       moduleDescription,
       renderFields moduleName moduleFields,
       renderFunctions moduleFunctions
     ]
 
 renderFunctions :: [DocumentedFunction e] -> Text
-renderFunctions = \case
-  [] -> mempty
-  fs ->
-    "\n## Functions\n\n"
-      <> T.intercalate "\n\n" (map (("### " <>) . renderFunction) fs)
+renderFunctions [] = mempty
+renderFunctions fs = "\n## Functions\n\n" <> T.intercalate "\n\n" (map (("### " <>) . renderFunction) fs)
 
 renderFunction :: DocumentedFunction e -> Text
 renderFunction fn =
@@ -57,14 +53,12 @@ renderFunctionParams (FunDoc {funDocParameters}) =
     param (ParameterDoc {parameterName}) = parameterName
 
 renderFields :: Name -> [Field e] -> Text
+renderFields _ [] = mempty
 renderFields name fs =
-  if null fs
-    then mempty
-    else
-      unlinesNonEmpty
-        [ "\n## Fields",
-          T.intercalate "\n" (map (renderField name) fs)
-        ]
+  unlinesNonEmpty
+    [ "\n## Fields",
+      T.intercalate "\n" (map (renderField name) fs)
+    ]
 
 renderField :: Name -> Field e -> Text
 renderField modName (Field {fieldName, fieldDoc}) = do
@@ -106,11 +100,9 @@ renderParamDoc pd =
     ]
 
 renderResultsDoc :: ResultsDoc -> Text
-renderResultsDoc = \case
-  ResultsDocList [] -> mempty
-  ResultsDocList rds ->
-    "\nReturns:\n\n" <> T.intercalate "\n" (map renderResultValueDoc rds)
-  ResultsDocMult txt -> " -  " <> indent 4 txt
+renderResultsDoc (ResultsDocList []) = mempty
+renderResultsDoc (ResultsDocList rds) = "\nReturns:\n\n" <> T.intercalate "\n" (map renderResultValueDoc rds)
+renderResultsDoc (ResultsDocMult txt) = " -  " <> indent 4 txt
 
 renderResultValueDoc :: ResultValueDoc -> Text
 renderResultValueDoc rd =
