@@ -39,18 +39,13 @@ renderFunction fn =
         if T.null fnName
           then "<anonymous function>"
           else fnName
-   in T.intercalate
-        "\n"
-        [ name <> " (" <> renderFunctionParams fnDoc <> ")",
-          "",
+   in unlinesNonEmpty
+        [ "`" <> name <> "(" <> renderFunctionParams fnDoc <> ")" <> "`\n",
           renderFunctionDoc fnDoc
         ]
 
 renderFunctionParams :: FunctionDoc -> Text
-renderFunctionParams (FunDoc {funDocParameters}) =
-  T.intercalate ", " $ map param funDocParameters
-  where
-    param (ParameterDoc {parameterName}) = parameterName
+renderFunctionParams (FunDoc {funDocParameters}) = T.intercalate ", " $ map parameterName funDocParameters
 
 renderFields :: Name -> [Field e] -> Text
 renderFields _ [] = mempty

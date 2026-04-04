@@ -3,7 +3,7 @@ Version specifier handling
 
 ## Functions
 
-### must_be_at_least (self, reference, msg)
+### `must_be_at_least(self, reference, msg)`
 
 Parameters:
 
@@ -16,3 +16,4 @@ reference
 msg
 :   alternative message (string)
  -  Returns no result, and throws an error if this version is older than `reference`.
+
