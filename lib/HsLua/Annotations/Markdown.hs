@@ -41,7 +41,7 @@ renderFunction fn =
           then "<anonymous function>"
           else fnName
    in unlinesNonEmpty
-        [ "`" <> name <> "(" <> renderFunctionParams fnDoc <> ")" <> "`\n",
+        [ "`function " <> name <> "(" <> renderFunctionParams fnDoc <> ")" <> "`\n",
           renderFunctionDoc fnDoc
         ]
 

@@ -3,7 +3,7 @@ Version specifier handling
 
 ## Functions
 
-### `must_be_at_least(self, reference, msg)`
+### `function must_be_at_least(self, reference, msg)`
 
 ## Parameters
 

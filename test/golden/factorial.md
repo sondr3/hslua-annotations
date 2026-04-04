@@ -1,4 +1,4 @@
-`factorial(n)`
+`function factorial(n)`
 
 Calculates the factorial of a positive integer.
 
