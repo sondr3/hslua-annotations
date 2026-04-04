@@ -92,7 +92,7 @@ renderParamTable ps =
 
 renderParamType :: [ParameterDoc] -> Text
 renderParamType [] = "()"
-renderParamType ps = "(" <> T.intercalate ", " (map (\p -> parameterName p <> ": " <> typeToText (parameterType p)) ps) <> ")"
+renderParamType ps = "(" <> T.intercalate ", " (map (\p -> parameterName p <> bool "" "?" (parameterIsOptional p) <> ": " <> typeToText (parameterType p)) ps) <> ")"
 
 renderParamField :: ParameterDoc -> Text
 renderParamField (ParameterDoc {parameterName, parameterDescription, parameterType, parameterIsOptional}) =

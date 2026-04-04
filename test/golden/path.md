@@ -146,7 +146,7 @@ Returns:
  -  contracted filename (string)
 
 ```lua
-function make_relative(path: string, root: string, unsafe: boolean): string
+function make_relative(path: string, root: string, unsafe?: boolean): string
 ```
 
 
