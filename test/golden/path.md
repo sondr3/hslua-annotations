@@ -28,10 +28,11 @@ Gets the directory name, i.e., removes the last directory separator and everythi
 
 *Since: 0.1.0*
 
-Parameters:
+## Parameters
 
-filepath
-:   path (string)
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `filepath` | `string` | path |
 
 Returns:
 
@@ -44,10 +45,11 @@ Get the file name.
 
 *Since: 0.1.0*
 
-Parameters:
+## Parameters
 
-filepath
-:   path (string)
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `filepath` | `string` | path |
 
 Returns:
 
@@ -60,10 +62,11 @@ Checks whether a path is absolute, i.e. not fixed to a root.
 
 *Since: 0.1.0*
 
-Parameters:
+## Parameters
 
-filepath
-:   path (string)
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `filepath` | `string` | path |
 
 Returns:
 
@@ -76,10 +79,11 @@ Checks whether a path is relative or fixed to a root.
 
 *Since: 0.1.0*
 
-Parameters:
+## Parameters
 
-filepath
-:   path (string)
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `filepath` | `string` | path |
 
 Returns:
 
@@ -92,10 +96,11 @@ Join path elements back together by the directory separator.
 
 *Since: 0.1.0*
 
-Parameters:
+## Parameters
 
-filepaths
-:   path components ({string,...})
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `filepaths` | `string[]` | path components |
 
 Returns:
 
@@ -108,16 +113,13 @@ Contract a filename, based on a relative path. Note that the resulting path will
 
 *Since: 0.1.0*
 
-Parameters:
+## Parameters
 
-path
-:   path to be made relative (string)
-
-root
-:   root path (string)
-
-unsafe
-:   whether to allow `..` in the result. (boolean)
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `path` | `string` | path to be made relative |
+| `root` | `string` | root path |
+| `unsafe` | `boolean?` | whether to allow `..` in the result. |
 
 Returns:
 
@@ -138,10 +140,11 @@ Normalizes a path.
 
 *Since: 0.1.0*
 
-Parameters:
+## Parameters
 
-filepath
-:   path (string)
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `filepath` | `string` | path |
 
 Returns:
 
@@ -154,10 +157,11 @@ Splits a path by the directory separator.
 
 *Since: 0.1.0*
 
-Parameters:
+## Parameters
 
-filepath
-:   path (string)
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `filepath` | `string` | path |
 
 Returns:
 
@@ -170,10 +174,11 @@ Splits the last extension from a file path and returns the parts. The extension,
 
 *Since: 0.1.0*
 
-Parameters:
+## Parameters
 
-filepath
-:   path (string)
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `filepath` | `string` | path |
 
 Returns:
 
@@ -187,10 +192,11 @@ Takes a string and splits it on the `search_path_separator` character. Blank ite
 
 *Since: 0.1.0*
 
-Parameters:
+## Parameters
 
-search_path
-:   platform-specific search path (string)
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `search_path` | `string` | platform-specific search path |
 
 Returns:
 
@@ -202,8 +208,6 @@ Returns:
 Augment the string module such that strings can be used as path objects.
 
 *Since: 0.1.0*
-
-Parameters:
 
 
 

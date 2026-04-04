@@ -4,6 +4,7 @@ module HsLua.Annotations.Markdown
   )
 where
 
+import Data.Bool (bool)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Version (showVersion)
@@ -75,24 +76,22 @@ renderFunctionDoc (FunDoc {funDocDescription, funDocSince, funDocParameters, fun
           then ""
           else funDocDescription <> sinceTag <> "\n\n"
       )
-        <> renderParamDocs funDocParameters
+        <> renderParamTable funDocParameters
         <> renderResultsDoc funDocResults
 
-renderParamDocs :: [ParameterDoc] -> Text
-renderParamDocs pds =
-  "Parameters:\n\n"
-    <> T.intercalate "\n" (map renderParamDoc pds)
-
-renderParamDoc :: ParameterDoc -> Text
-renderParamDoc pd =
-  mconcat
-    [ parameterName pd,
-      "\n:   ",
-      parameterDescription pd,
-      " (",
-      T.pack (typeSpecToString (parameterType pd)),
-      ")\n"
+renderParamTable :: [ParameterDoc] -> Text
+renderParamTable [] = ""
+renderParamTable ps =
+  T.unlines
+    [ "## Parameters\n",
+      "| Name | Type | Description |",
+      "| ---- | ---- | ----------- |",
+      T.intercalate "\n" (map renderParamField ps)
     ]
+
+renderParamField :: ParameterDoc -> Text
+renderParamField (ParameterDoc {parameterName, parameterDescription, parameterType, parameterIsOptional}) =
+  "| `" <> parameterName <> "` | `" <> typeToText parameterType <> bool "" "?" parameterIsOptional <> "` | " <> parameterDescription <> " |"
 
 renderResultsDoc :: ResultsDoc -> Text
 renderResultsDoc (ResultsDocList []) = mempty

@@ -4,10 +4,11 @@ Calculates the factorial of a positive integer.
 
 *Since: 1.0.0*
 
-Parameters:
+## Parameters
 
-n
-:    (integer)
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `n` | `integer` |  |
 
 Returns:
 
