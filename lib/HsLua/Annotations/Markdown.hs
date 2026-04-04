@@ -8,7 +8,7 @@ import Data.Bool (bool)
 import Data.Text (Text)
 import Data.Text qualified as T
 import Data.Version (showVersion)
-import HsLua.Annotations.Shared (nameToText, returnType, typeToText, unlinesNonEmpty)
+import HsLua.Annotations.Shared (hasReturnType, nameToText, returnType, typeToText, unlinesNonEmpty)
 import HsLua.Core
 import HsLua.Core.Utf8 qualified as Utf8
 import HsLua.Packaging
@@ -78,7 +78,7 @@ renderFunctionDoc name fd@(FunDoc {funDocDescription, funDocSince, funDocParamet
       )
         <> renderParamTable funDocParameters
         <> renderResultsDoc funDocResults
-        <> ("\n\n```lua\n" <> "function " <> name <> renderParamType funDocParameters <> ": " <> returnType fd <> "\n```")
+        <> ("\n\n```lua\n" <> "function " <> name <> renderParamType funDocParameters <> (if hasReturnType funDocResults then ": " <> returnType fd else "") <> "\n```")
 
 renderParamTable :: [ParameterDoc] -> Text
 renderParamTable [] = mempty

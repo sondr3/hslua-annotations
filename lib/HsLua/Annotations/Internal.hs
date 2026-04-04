@@ -6,7 +6,7 @@ where
 
 import Data.Text (Text)
 import Data.Text qualified as T
-import HsLua.Annotations.Shared (nameToText, returnType, typeToText, unlinesNonEmpty)
+import HsLua.Annotations.Shared (hasReturnType, nameToText, returnType, typeToText, unlinesNonEmpty)
 import HsLua.Core (Name (..))
 import HsLua.Packaging
 
@@ -96,7 +96,7 @@ annotateFunction' parent (DocumentedFunction {functionName, functionDoc}) = do
    in unlinesNonEmpty
         [ if T.null desc then mempty else desc,
           paramAnn,
-          "---@return " <> typ,
+          if hasReturnType (funDocResults functionDoc) then "---@return " <> typ else "",
           "function " <> paren <> name <> "(" <> params <> ")"
         ]
 
