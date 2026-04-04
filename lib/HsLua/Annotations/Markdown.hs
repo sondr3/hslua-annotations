@@ -83,7 +83,7 @@ renderParamTable :: [ParameterDoc] -> Text
 renderParamTable [] = ""
 renderParamTable ps =
   T.unlines
-    [ "## Parameters\n",
+    [ "#### Parameters\n",
       "| Name | Type | Description |",
       "| ---- | ---- | ----------- |",
       T.intercalate "\n" (map renderParamField ps)

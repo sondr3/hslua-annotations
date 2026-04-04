@@ -5,7 +5,7 @@ Version specifier handling
 
 ### `function must_be_at_least(self, reference, msg)`
 
-## Parameters
+#### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |

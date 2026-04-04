@@ -28,7 +28,7 @@ Gets the directory name, i.e., removes the last directory separator and everythi
 
 *Since: 0.1.0*
 
-## Parameters
+#### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -45,7 +45,7 @@ Get the file name.
 
 *Since: 0.1.0*
 
-## Parameters
+#### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -62,7 +62,7 @@ Checks whether a path is absolute, i.e. not fixed to a root.
 
 *Since: 0.1.0*
 
-## Parameters
+#### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -79,7 +79,7 @@ Checks whether a path is relative or fixed to a root.
 
 *Since: 0.1.0*
 
-## Parameters
+#### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -96,7 +96,7 @@ Join path elements back together by the directory separator.
 
 *Since: 0.1.0*
 
-## Parameters
+#### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -113,7 +113,7 @@ Contract a filename, based on a relative path. Note that the resulting path will
 
 *Since: 0.1.0*
 
-## Parameters
+#### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -140,7 +140,7 @@ Normalizes a path.
 
 *Since: 0.1.0*
 
-## Parameters
+#### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -157,7 +157,7 @@ Splits a path by the directory separator.
 
 *Since: 0.1.0*
 
-## Parameters
+#### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -174,7 +174,7 @@ Splits the last extension from a file path and returns the parts. The extension,
 
 *Since: 0.1.0*
 
-## Parameters
+#### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -192,7 +192,7 @@ Takes a string and splits it on the `search_path_separator` character. Blank ite
 
 *Since: 0.1.0*
 
-## Parameters
+#### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
