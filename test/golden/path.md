@@ -252,6 +252,6 @@ Augment the string module such that strings can be used as path objects.
 
 
 ```lua
-function treat_strings_as_paths(): 
+function treat_strings_as_paths()
 ```
 

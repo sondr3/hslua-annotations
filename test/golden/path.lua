@@ -66,6 +66,5 @@ function path.split_extension(filepath)
 function path.split_search_path(search_path)
 
 ---Augment the string module such that strings can be used as path objects.
----@return 
 function path.treat_strings_as_paths()
 

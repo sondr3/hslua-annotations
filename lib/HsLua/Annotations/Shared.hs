@@ -36,6 +36,7 @@ basicTypeName = \case
   t -> T.pack $ map toLower . drop 4 $ show t
 
 hasReturnType :: ResultsDoc -> Bool
+hasReturnType (ResultsDocList []) = False
 hasReturnType (ResultsDocList _) = True
 hasReturnType _ = False
 
