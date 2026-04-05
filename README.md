@@ -15,12 +15,47 @@
 
 **Table of Contents**
 
+- [Installation](#installation)
+- [Usage](#usage)
 - [License](#license)
 
 </details>
 
 This is a small library to generate [LuaLS](https://luals.github.io/wiki/annotations) and [EmmyLua](https://github.com/EmmyLuaLs/emmylua-analyzer-rust/blob/main/docs/emmylua_doc/annotations_EN/README.md) 
 annotations from HsLua.
+
+## Installation
+
+Add `hslua-annotations` to your Cabal file:
+
+```cabal
+build-depends:
+  hslua-annotations ^>= 0.1
+```
+
+## Usage
+
+```haskell
+import HsLua.Annotations (annotateModule, documentModule)
+import HsLua.Module.Path qualified as Path
+import HsLua.Packaging
+import HsLua.Core qualified as Lua
+import Data.Text (Text)
+import Data.Text.IO qualified as TIO
+
+-- utility function might be needed to narrow the `Module e` type
+renderDocs :: Module Lua.Exception -> Text
+renderDocs mod = documentModule mod
+
+-- utility function might be needed to narrow the `Module e` type
+renderAnnotations :: Module Lua.Exception -> Text
+renderAnnotations mod = annotateModule mod
+
+main :: IO ()
+main = do
+  TIO.writeFile "path.md" $ renderDocs Path.documentedModule
+  TIO.writeFile "path.lua" $ renderAnnotations Path.documentedModule
+```
 
 ## License
 

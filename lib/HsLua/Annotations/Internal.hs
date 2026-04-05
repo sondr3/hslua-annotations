@@ -12,6 +12,9 @@ import HsLua.Packaging
 
 -- | Create type annotations for a documented function.
 --
+-- See the below example or the generated test annotations [here](https://github.com/sondr3/hslua-annotations/blob/main/test/golden/factorial.lua).
+--
+--
 -- === __Example__
 --
 -- Given the example `factorial` function from HsLua:
@@ -25,8 +28,7 @@ import HsLua.Packaging
 --     #? "Calculates the factorial of a positive integer."
 -- @
 --
--- The output of running @annotateFunction factorial@ on it will be the
--- following string:
+-- The output of running @annotateFunction factorial@ will be the following string:
 --
 -- @
 -- ---Calculates the factorial of a positive integer.
@@ -41,14 +43,15 @@ annotateFunction = annotateFunction' Nothing
 
 -- | Create type annotations for a documented module.
 --
+-- See the below example or the generated test annotations [here](https://github.com/sondr3/hslua-annotations/blob/main/test/golden/path.lua).
+--
 -- === __Example__
 --
--- Using @HsLua.Module.Version@ and the `documentedModule` from it you can
--- generate annotations for the whole module. Note that you probably will
--- have to narrow the tyoe of @Module a@ to for example @Module Lua.Exception@.
+-- Building annotations for @HsLua.Module.Path@ using the exported @documentedModule@
+-- you can generate annotations for the whole module. Note that you probably will
+-- have to narrow the type of @Module a@ to for example @Module Lua.Exception@.
 --
--- The output of running @annotateModule documentedModule@ on it will be the
--- following string:
+-- The output of running @annotateModule documentedModule@ will be the following string:
 --
 -- @
 -- ---\@meta path
