@@ -77,5 +77,6 @@ jobs:
       - name: Publish
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          cabal upload -t ${{ secrets.HACKAGE_TOKEN }}
-          cabal upload -d $dir/*-docs.tar.gz -t ${{ secrets.HACKAGE_TOKEN }}
+          cabal sdist
+          cabal upload ./dist-newstyle/sdist/*.tar.gz --publish -t ${{ secrets.HACKAGE_TOKEN }}
+          cabal upload -d *-docs.tar.gz -t ${{ secrets.HACKAGE_TOKEN }}
