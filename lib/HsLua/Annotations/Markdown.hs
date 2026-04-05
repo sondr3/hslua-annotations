@@ -13,14 +13,8 @@ import HsLua.Core
 import HsLua.Core.Utf8 qualified as Utf8
 import HsLua.Packaging
 
-documentFunction :: DocumentedFunction a -> Text
-documentFunction = renderFunction
-
-documentModule :: Module a -> Text
-documentModule = renderModule
-
-renderModule :: Module e -> Text
-renderModule (Module {moduleFields, moduleName, moduleDescription, moduleFunctions}) =
+documentModule :: Module e -> Text
+documentModule (Module {moduleFields, moduleName, moduleDescription, moduleFunctions}) =
   unlinesNonEmpty
     [ "# `" <> nameToText moduleName <> "`",
       moduleDescription,
@@ -30,10 +24,10 @@ renderModule (Module {moduleFields, moduleName, moduleDescription, moduleFunctio
 
 renderFunctions :: [DocumentedFunction e] -> Text
 renderFunctions [] = mempty
-renderFunctions fs = "## Functions\n\n" <> T.intercalate "\n" (map (("### " <>) . renderFunction) fs)
+renderFunctions fs = "## Functions\n\n" <> T.intercalate "\n" (map (("### " <>) . documentFunction) fs)
 
-renderFunction :: DocumentedFunction e -> Text
-renderFunction fn =
+documentFunction :: DocumentedFunction e -> Text
+documentFunction fn =
   let fnDoc = functionDoc fn
       fnName = Utf8.toText $ fromName (functionName fn)
       name =
