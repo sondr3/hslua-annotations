@@ -1,4 +1,7 @@
-
+build/
+cache/
+packagedb/
+*.tar.gz
 
 ### Created by https://www.gitignore.io
 ### Haskell ###

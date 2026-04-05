@@ -3,7 +3,7 @@ name: pipeline
 on: [push, pull_request]
 
 jobs:
-  cabal:
+  check:
     name: pipeline
     runs-on: ubuntu-latest
 
@@ -69,3 +69,13 @@ jobs:
 
       - name: Check cabal file
         run: cabal check
+ 
+      - name: Document
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: cabal haddock --builddir="$dir" --haddock-for-hackage --enable-documentation
+
+      - name: Publish
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          cabal upload -t ${{ secrets.HACKAGE_TOKEN }}
+          cabal upload -d $dir/*-docs.tar.gz -t ${{ secrets.HACKAGE_TOKEN }}
