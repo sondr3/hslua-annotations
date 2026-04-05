@@ -19,14 +19,9 @@ path.search_path_separator: string
 ```
 
 
-
 ## Functions
 
 ### `function directory(filepath)`
-
-Gets the directory name, i.e., removes the last directory separator and everything after from the given path.
-
-*Since: 0.1.0*
 
 #### Parameters
 
@@ -34,20 +29,22 @@ Gets the directory name, i.e., removes the last directory separator and everythi
 | ---- | ---- | ----------- |
 | `filepath` | `string` | path |
 
-Returns:
+#### Returns
 
- -  The filepath up to the last directory separator. (string)
+| Type | Description |
+| ---- | ----------- |
+| `string` | The filepath up to the last directory separator. |
+
+Gets the directory name, i.e., removes the last directory separator and everything after from the given path.
 
 ```lua
 function directory(filepath: string): string
 ```
 
+*Since: 0.1.0*
+
 
 ### `function filename(filepath)`
-
-Get the file name.
-
-*Since: 0.1.0*
 
 #### Parameters
 
@@ -55,20 +52,22 @@ Get the file name.
 | ---- | ---- | ----------- |
 | `filepath` | `string` | path |
 
-Returns:
+#### Returns
 
- -  File name part of the input path. (string)
+| Type | Description |
+| ---- | ----------- |
+| `string` | File name part of the input path. |
+
+Get the file name.
 
 ```lua
 function filename(filepath: string): string
 ```
 
+*Since: 0.1.0*
+
 
 ### `function is_absolute(filepath)`
-
-Checks whether a path is absolute, i.e. not fixed to a root.
-
-*Since: 0.1.0*
 
 #### Parameters
 
@@ -76,20 +75,22 @@ Checks whether a path is absolute, i.e. not fixed to a root.
 | ---- | ---- | ----------- |
 | `filepath` | `string` | path |
 
-Returns:
+#### Returns
 
- -  `true` iff `filepath` is an absolute path, `false` otherwise. (boolean)
+| Type | Description |
+| ---- | ----------- |
+| `boolean` | `true` iff `filepath` is an absolute path, `false` otherwise. |
+
+Checks whether a path is absolute, i.e. not fixed to a root.
 
 ```lua
 function is_absolute(filepath: string): boolean
 ```
 
+*Since: 0.1.0*
+
 
 ### `function is_relative(filepath)`
-
-Checks whether a path is relative or fixed to a root.
-
-*Since: 0.1.0*
 
 #### Parameters
 
@@ -97,20 +98,22 @@ Checks whether a path is relative or fixed to a root.
 | ---- | ---- | ----------- |
 | `filepath` | `string` | path |
 
-Returns:
+#### Returns
 
- -  `true` iff `filepath` is a relative path, `false` otherwise. (boolean)
+| Type | Description |
+| ---- | ----------- |
+| `boolean` | `true` iff `filepath` is a relative path, `false` otherwise. |
+
+Checks whether a path is relative or fixed to a root.
 
 ```lua
 function is_relative(filepath: string): boolean
 ```
 
+*Since: 0.1.0*
+
 
 ### `function join(filepaths)`
-
-Join path elements back together by the directory separator.
-
-*Since: 0.1.0*
 
 #### Parameters
 
@@ -118,20 +121,22 @@ Join path elements back together by the directory separator.
 | ---- | ---- | ----------- |
 | `filepaths` | `string[]` | path components |
 
-Returns:
+#### Returns
 
- -  The joined path. (string)
+| Type | Description |
+| ---- | ----------- |
+| `string` | The joined path. |
+
+Join path elements back together by the directory separator.
 
 ```lua
 function join(filepaths: string[]): string
 ```
 
+*Since: 0.1.0*
+
 
 ### `function make_relative(path, root, unsafe)`
-
-Contract a filename, based on a relative path. Note that the resulting path will never introduce `..` paths, as the presence of symlinks means `../b` may not reach `a/b` if it starts from `a/c`. For a worked example see [this blog post](http://neilmitchell.blogspot.co.uk/2015/10/filepaths-are-subtle-symlinks-are-hard.html).
-
-*Since: 0.1.0*
 
 #### Parameters
 
@@ -141,16 +146,34 @@ Contract a filename, based on a relative path. Note that the resulting path will
 | `root` | `string` | root path |
 | `unsafe` | `boolean?` | whether to allow `..` in the result. |
 
-Returns:
+#### Returns
 
- -  contracted filename (string)
+| Type | Description |
+| ---- | ----------- |
+| `string` | contracted filename |
+
+Contract a filename, based on a relative path. Note that the resulting path will never introduce `..` paths, as the presence of symlinks means `../b` may not reach `a/b` if it starts from `a/c`. For a worked example see [this blog post](http://neilmitchell.blogspot.co.uk/2015/10/filepaths-are-subtle-symlinks-are-hard.html).
 
 ```lua
 function make_relative(path: string, root: string, unsafe?: boolean): string
 ```
 
+*Since: 0.1.0*
+
 
 ### `function normalize(filepath)`
+
+#### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `filepath` | `string` | path |
+
+#### Returns
+
+| Type | Description |
+| ---- | ----------- |
+| `string` | The normalized path. |
 
 Normalizes a path.
 
@@ -162,28 +185,14 @@ Normalizes a path.
  - an empty path becomes `.`
 
 
-*Since: 0.1.0*
-
-#### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| `filepath` | `string` | path |
-
-Returns:
-
- -  The normalized path. (string)
-
 ```lua
 function normalize(filepath: string): string
 ```
 
+*Since: 0.1.0*
+
 
 ### `function split(filepath)`
-
-Splits a path by the directory separator.
-
-*Since: 0.1.0*
 
 #### Parameters
 
@@ -191,20 +200,22 @@ Splits a path by the directory separator.
 | ---- | ---- | ----------- |
 | `filepath` | `string` | path |
 
-Returns:
+#### Returns
 
- -  List of all path components. ({string,...})
+| Type | Description |
+| ---- | ----------- |
+| `string[]` | List of all path components. |
+
+Splits a path by the directory separator.
 
 ```lua
 function split(filepath: string): string[]
 ```
 
+*Since: 0.1.0*
+
 
 ### `function split_extension(filepath)`
-
-Splits the last extension from a file path and returns the parts. The extension, if present, includes the leading separator; if the path has no extension, then the empty string is returned as the extension.
-
-*Since: 0.1.0*
 
 #### Parameters
 
@@ -212,21 +223,23 @@ Splits the last extension from a file path and returns the parts. The extension,
 | ---- | ---- | ----------- |
 | `filepath` | `string` | path |
 
-Returns:
+#### Returns
 
- -  filepath without extension (string)
- -  extension or empty string (string)
+| Type | Description |
+| ---- | ----------- |
+| `string` | filepath without extension |
+| `string` | extension or empty string |
+
+Splits the last extension from a file path and returns the parts. The extension, if present, includes the leading separator; if the path has no extension, then the empty string is returned as the extension.
 
 ```lua
 function split_extension(filepath: string): string|string
 ```
 
+*Since: 0.1.0*
+
 
 ### `function split_search_path(search_path)`
-
-Takes a string and splits it on the `search_path_separator` character. Blank items are ignored on Windows, and converted to `.` on Posix. On Windows path elements are stripped of quotes.
-
-*Since: 0.1.0*
 
 #### Parameters
 
@@ -234,24 +247,29 @@ Takes a string and splits it on the `search_path_separator` character. Blank ite
 | ---- | ---- | ----------- |
 | `search_path` | `string` | platform-specific search path |
 
-Returns:
+#### Returns
 
- -  list of directories in search path ({string,...})
+| Type | Description |
+| ---- | ----------- |
+| `string[]` | list of directories in search path |
+
+Takes a string and splits it on the `search_path_separator` character. Blank items are ignored on Windows, and converted to `.` on Posix. On Windows path elements are stripped of quotes.
 
 ```lua
 function split_search_path(search_path: string): string[]
 ```
+
+*Since: 0.1.0*
 
 
 ### `function treat_strings_as_paths()`
 
 Augment the string module such that strings can be used as path objects.
 
-*Since: 0.1.0*
-
-
-
 ```lua
 function treat_strings_as_paths()
 ```
+
+*Since: 0.1.0*
+
 

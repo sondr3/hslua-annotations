@@ -30,7 +30,7 @@ renderModule (Module {moduleFields, moduleName, moduleDescription, moduleFunctio
 
 renderFunctions :: [DocumentedFunction e] -> Text
 renderFunctions [] = mempty
-renderFunctions fs = "\n## Functions\n\n" <> T.intercalate "\n\n" (map (("### " <>) . renderFunction) fs)
+renderFunctions fs = "## Functions\n\n" <> T.intercalate "\n" (map (("### " <>) . renderFunction) fs)
 
 renderFunction :: DocumentedFunction e -> Text
 renderFunction fn =
@@ -71,14 +71,14 @@ renderFunctionDoc :: Text -> FunctionDoc -> Text
 renderFunctionDoc name fd@(FunDoc {funDocDescription, funDocSince, funDocParameters, funDocResults}) =
   let sinceTag = case funDocSince of
         Nothing -> mempty
-        Just version -> T.pack $ "\n\n*Since: " <> showVersion version <> "*"
-   in ( if T.null funDocDescription
-          then ""
-          else funDocDescription <> sinceTag <> "\n\n"
-      )
-        <> renderParamTable funDocParameters
-        <> renderResultsDoc funDocResults
-        <> ("\n\n```lua\n" <> "function " <> name <> renderParamType funDocParameters <> (if hasReturnType funDocResults then ": " <> returnType fd else "") <> "\n```")
+        Just version -> T.pack $ "*Since: " <> showVersion version <> "*"
+   in unlinesNonEmpty
+        [ renderParamTable funDocParameters,
+          renderResultsDoc funDocResults,
+          funDocDescription,
+          "\n```lua\n" <> "function " <> name <> renderParamType funDocParameters <> (if hasReturnType funDocResults then ": " <> returnType fd else "") <> "\n```\n",
+          sinceTag
+        ]
 
 renderParamTable :: [ParameterDoc] -> Text
 renderParamTable [] = mempty
@@ -100,18 +100,17 @@ renderParamField (ParameterDoc {parameterName, parameterDescription, parameterTy
 
 renderResultsDoc :: ResultsDoc -> Text
 renderResultsDoc (ResultsDocList []) = mempty
-renderResultsDoc (ResultsDocList rds) = "\nReturns:\n\n" <> T.intercalate "\n" (map renderResultValueDoc rds)
+renderResultsDoc (ResultsDocList rds) =
+  unlinesNonEmpty
+    [ "#### Returns\n",
+      "| Type | Description |",
+      "| ---- | ----------- |",
+      T.intercalate "\n" (map renderResultValueDoc rds)
+    ]
 renderResultsDoc (ResultsDocMult txt) = " -  " <> indent 4 txt
 
 renderResultValueDoc :: ResultValueDoc -> Text
-renderResultValueDoc rd =
-  mconcat
-    [ " -  ",
-      resultValueDescription rd,
-      " (",
-      T.pack (typeSpecToString $ resultValueType rd),
-      ")"
-    ]
+renderResultValueDoc (ResultValueDoc {resultValueType, resultValueDescription}) = "| `" <> typeToText resultValueType <> "` | " <> resultValueDescription <> " |"
 
 indent :: Int -> Text -> Text
 indent n = T.replace "\n" (T.replicate n " ")

@@ -1,19 +1,22 @@
 `function factorial(n)`
 
-Calculates the factorial of a positive integer.
-
-*Since: 1.0.0*
-
 #### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | `n` | `integer` |  |
 
-Returns:
+#### Returns
 
- -  factorial (integer)
+| Type | Description |
+| ---- | ----------- |
+| `integer` | factorial |
+
+Calculates the factorial of a positive integer.
 
 ```lua
 function factorial(n: integer): integer
 ```
+
+*Since: 1.0.0*
+
