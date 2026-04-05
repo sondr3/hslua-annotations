@@ -2,6 +2,7 @@
 
 <p align="center">
    <a href="https://github.com/sondr3/hslua-annotations/actions"><img alt="GitHub Actions Status" src="https://github.com/sondr3/hslua-annotations/workflows/pipeline/badge.svg" /></a>
+   <a href="https://hackage.haskell.org/package/hslua-annotations"><img alt="Hackage version" src="https://img.shields.io/hackage/v/hslua-annotations.svg?logo=haskell" /></a>
    <br />
 </p>
 
