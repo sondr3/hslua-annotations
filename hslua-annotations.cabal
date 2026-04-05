@@ -9,6 +9,7 @@ license: (MIT OR Apache-2.0)
 license-file: LICENSE LICENSE_APACHE
 author: Sondre Aasemoen
 maintainer: sondre@eons.io
+category: Foreign
 build-type: Simple
 extra-doc-files:
   CHANGELOG.md
