@@ -79,4 +79,4 @@ jobs:
         run: |
           cabal sdist
           cabal upload ./dist-newstyle/sdist/*.tar.gz --publish -t ${{ secrets.HACKAGE_TOKEN }}
-          cabal upload -d *-docs.tar.gz -t ${{ secrets.HACKAGE_TOKEN }}
+          cabal upload --publish --documentation *-docs.tar.gz -t ${{ secrets.HACKAGE_TOKEN }}
